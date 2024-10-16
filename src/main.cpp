@@ -18,21 +18,30 @@ BLEUnsignedIntCharacteristic mySoftGloveCharacteristic("2A1C", BLERead | BLENoti
 
 //  Soft Sensors Pins
 
-#define RPolegar_Pin 4
-#define RIndicator_Pin 5
-#define RMedio_Pin 30
-#define RAnelar_Pin 29
-#define RMindinho_Pin 31
+#define RPolegar_Pin A0
+#define RIndicator_Pin A1
+#define RMedio_Pin A2
+#define RAnelar_Pin A3
+#define RMindinho_Pin A4
 
 
 void setup() {
+
+  
+  pinMode(RPolegar_Pin,INPUT);
+  pinMode(RIndicator_Pin,INPUT);
+  pinMode(RMedio_Pin,INPUT);
+  pinMode(RAnelar_Pin,INPUT);
+  pinMode(RMindinho_Pin,INPUT);
+
+
   Serial.begin(9600);
   while (!Serial);
 
-  if (!IMU.begin()) {
-    Serial.println("Failed to initialize IMU!");
-    while (1);
-  }
+  // if (!IMU.begin()) {
+  //   Serial.println("Failed to initialize IMU!");
+  //   while (1);
+  // }
 
   // print the header
   Serial.println("aX,aY,aZ,gX,gY,gZ");
@@ -45,6 +54,18 @@ uint16_t RIndicator = analogRead(RIndicator_Pin);
 uint16_t RMedio = analogRead(RMedio_Pin);
 uint16_t RAnelar = analogRead(RAnelar_Pin);
 uint16_t RMindinho = analogRead(RMindinho_Pin);
+
+
+Serial.print("Dedos: Polegar: ");
+Serial.print(RPolegar, 3);
+Serial.print("   Indicador: ");
+Serial.print(RIndicator, 3);
+Serial.print("   Medio: ");
+Serial.print(RMedio, 3);
+Serial.print("  Anelar: ");
+Serial.print(RAnelar, 3);
+Serial.print("   Midinho: ");
+Serial.println(RMindinho, 3);
 
 
 

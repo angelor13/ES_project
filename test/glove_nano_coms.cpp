@@ -18,11 +18,11 @@ BLEUnsignedIntCharacteristic mySoftGloveCharacteristic("2A1C", BLERead | BLENoti
 
 //  Soft Sensors Pins
 
-#define RPolegar_Pin 4
-#define RIndicator_Pin 5
-#define RMedio_Pin 30
-#define RAnelar_Pin 29
-#define RMindinho_Pin 31
+#define RPolegar_Pin A0
+#define RIndicator_Pin A1
+#define RMedio_Pin A2
+#define RAnelar_Pin A3
+#define RMindinho_Pin A4
 
 
 void setup() {
