@@ -75,16 +75,16 @@ void update_states(int Polegar, int Indicador, int Medio, int Anelar, int Mindin
     Mindinho_state=0;
   }
 
-Serial.print("Finger State: Polegar: "); 
-Serial.print(Polegar_state);
-Serial.print("   Indicador: ");
-Serial.print(Indicador_state);
-Serial.print("   Medio: ");
-Serial.print(Medio_state);
-Serial.print("  Anelar: ");
-Serial.print(Anelar_state);
-Serial.print("   Midinho: ");
-Serial.println(Mindinho_state);
+  Serial.print("Finger State: Polegar: "); 
+  Serial.print(Polegar_state);
+  Serial.print("   Indicador: ");
+  Serial.print(Indicador_state);
+  Serial.print("   Medio: ");
+  Serial.print(Medio_state);
+  Serial.print("  Anelar: ");
+  Serial.print(Anelar_state);
+  Serial.print("   Midinho: ");
+  Serial.println(Mindinho_state);
 
 }
 
@@ -93,6 +93,81 @@ void send_info(bool Polegar_state,bool Indicador_state,bool Medio_state,bool Ane
     // BLE.advertise();                 // Disponibiliza o serviço
     // mySoftGloveCharacteristic.writeValue(cenas);
 }
+
+
+
+
+void codify_moves(bool Polegar_state,bool Indicador_state,bool Medio_state,bool Anelar_state, bool Mindinho_state, double aX, double aY, double aZ){
+
+    if (Polegar_state == 1 && Indicador_state == 0 && Medio_state == 0 && Anelar_state == 1 && Mindinho_state == 1 && aX>=0.800){
+        Serial.println(" ");
+        Serial.println(" ");
+        Serial.println(" ");
+        Serial.println("Frente");
+        Serial.println(" ");
+        Serial.println(" ");
+        Serial.println(" ");
+    }else  if (Polegar_state == 0 && Indicador_state == 1 && Medio_state == 1 && Anelar_state == 1 && Mindinho_state == 1 && aZ<=-0.800){
+        Serial.println(" ");
+        Serial.println(" ");
+        Serial.println(" ");
+        Serial.println("Direita");
+        Serial.println(" ");
+        Serial.println(" ");
+        Serial.println(" ");
+    }else  if (Polegar_state == 0 && Indicador_state == 1 && Medio_state == 1 && Anelar_state == 1 && Mindinho_state == 1 && aZ>=0.800){
+        Serial.println(" ");
+        Serial.println(" ");
+        Serial.println(" ");
+        Serial.println("Esquerda");
+        Serial.println(" ");
+        Serial.println(" ");
+        Serial.println(" ");
+    }else  if (Polegar_state == 0 && Indicador_state == 1 && Medio_state==1 && Anelar_state==1 && Mindinho_state == 1 && aY>=0.800){
+        Serial.println(" ");
+        Serial.println(" ");
+        Serial.println(" ");
+        Serial.println("Tras");
+        Serial.println(" ");
+        Serial.println(" ");
+        Serial.println(" ");
+    }else  if (Polegar_state ==0 && Indicador_state == 1 && Medio_state == 1 && Anelar_state==1 && Mindinho_state == 1 &&  aX>=0.800){
+        Serial.println(" ");
+        Serial.println(" ");
+        Serial.println(" ");
+        Serial.println("Cima");
+        Serial.println(" ");
+        Serial.println(" ");
+        Serial.println(" ");
+    }
+    else  if (Polegar_state == 0 && Indicador_state ==1 && Medio_state==1 && Anelar_state==1 && Mindinho_state == 1 &&  aX<=-0.800){
+        Serial.println(" ");
+        Serial.println(" ");
+        Serial.println(" ");
+        Serial.println("Baixo");
+        Serial.println(" ");
+        Serial.println(" ");
+        Serial.println(" ");
+    }else  if (Polegar_state == 1 && Indicador_state ==1 && Medio_state==1 && Anelar_state==1 && Mindinho_state ==1){
+        Serial.println(" ");
+        Serial.println(" ");
+        Serial.println(" ");
+        Serial.println("Parar");
+        Serial.println(" ");
+        Serial.println(" ");
+        Serial.println(" ");
+    }
+    else{
+        Serial.println(" ");
+        Serial.println(" ");
+        Serial.println(" ");
+    }
+}
+
+
+
+
+
 
 
 void setup() {
@@ -151,55 +226,31 @@ int RMindinho = analogRead(RMindinho_Pin);
 // Serial.print("   Midinho: ");
 // Serial.println(RMindinho);
 
-// update_states(RPolegar,RIndicator,RMedio,RAnelar,RMindinho);
+update_states(RPolegar,RIndicator,RMedio,RAnelar,RMindinho);
 
 
-  float aX, aY, aZ, gX, gY, gZ;
+float aX, aY, aZ, gX, gY, gZ;
 
-  // // // wait for significant motion
-  // // while (samplesRead == numSamples) {
-  // //   if (IMU.accelerationAvailable()) {
-  // //     // read the acceleration data
-  // //     IMU.readAcceleration(aX, aY, aZ);
-
-  // //     // sum up the absolutes
-  // //     float aSum = fabs(aX) + fabs(aY) + fabs(aZ);
-
-  // //     // check if it's above the threshold
-  // //     if (aSum >= accelerationThreshold) {
-  // //       // reset the sample read count
-  // //       samplesRead = 0;
-  // //       break;
-  // //     }
-  // //   }
-  // // }
-
-  // // check if the all the required samples have been read since
-  // // the last time the significant motion was detected
-
-  //   // check if both new acceleration and gyroscope data is
-  //   // available
-    if (IMU.accelerationAvailable() && IMU.gyroscopeAvailable()) {
+  if (IMU.accelerationAvailable() && IMU.gyroscopeAvailable()) {
       // read the acceleration and gyroscope data
       IMU.readAcceleration(aX, aY, aZ);
       IMU.readGyroscope(gX, gY, gZ);
 
-      samplesRead++;
+      // samplesRead++;
 
       //print the data in CSV format
-      Serial.print("Acelerometro: aX: ");
-      Serial.print(aX, 3);
-      Serial.print("   aY: ");
-      Serial.print(aY, 3);
-      Serial.print("   aZ: ");
-      Serial.println(aZ, 3);
-      // Serial.print("Giroscopio: gX: ");
-      // Serial.print(gX, 3);
-      // Serial.print("   gY: ");
-      // Serial.print(gY, 3);
-      // Serial.print("   gZ: ");
-      // Serial.println(gZ, 3);
+      // Serial.print("Acelerometro: aX: ");
+      // Serial.print(aX, 3);
+      // Serial.print("   aY: ");
+      // Serial.print(aY, 3);
+      // Serial.print("   aZ: ");
+      // Serial.println(aZ, 3);
+
+      codify_moves(Polegar_state, Indicador_state, Medio_state, Anelar_state, Mindinho_state, aX,aY, aZ);
+
     }
   }
-    delay(50);
+  
+  delay(150);
+
 }
